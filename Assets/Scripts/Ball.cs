@@ -6,10 +6,12 @@ public class Ball : MonoBehaviour
 	float _moveSpeed = 200.0f;
 
 	private Rigidbody2D _rigidbody2D;
+	private AudioSource _bounceSound;
 
 	private void Awake()
 	{
 		_rigidbody2D = GetComponent<Rigidbody2D>();
+		_bounceSound = GetComponent<AudioSource>();
 	}
 
 	private void Start()
@@ -38,5 +40,10 @@ public class Ball : MonoBehaviour
 	public void AddForce(Vector2 force)
 	{
 		_rigidbody2D.AddForce(force);
+	}
+
+	private void OnCollisionEnter2D(Collision2D collision)
+	{
+		_bounceSound.Play();
 	}
 }

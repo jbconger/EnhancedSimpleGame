@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AIPaddle : Paddle
@@ -12,10 +10,10 @@ public class AIPaddle : Paddle
 		//ball moving towards AI paddle
 		if (ball.velocity.x > 0.0f)
 		{
-			if (ball.velocity.y > this.transform.position.y)
+			if (ball.position.y > _rigidbody2D.position.y)
 			{
 				_rigidbody2D.AddForce(Vector2.up * _moveSpeed);
-			} else if (ball.velocity.y < this.transform.position.y)
+			} else if (ball.position.y < _rigidbody2D.position.y)
 			{
 				_rigidbody2D.AddForce(Vector2.down * _moveSpeed);
 			}
@@ -23,11 +21,11 @@ public class AIPaddle : Paddle
 		//ball moving away from AI paddle, move towards center
 		else
 		{
-			if(this.transform.position.y > 0.0f)
+			if(_rigidbody2D.position.y > 0.0f)
 			{
 				_rigidbody2D.AddForce(Vector2.down * _moveSpeed);
 			}
-			else if (this.transform.position.y < 0.0f)
+			else if (_rigidbody2D.position.y < 0.0f)
 			{
 				_rigidbody2D.AddForce(Vector2.up * _moveSpeed);
 			}
