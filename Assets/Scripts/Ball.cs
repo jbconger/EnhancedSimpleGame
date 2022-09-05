@@ -15,17 +15,16 @@ public class Ball : MonoBehaviour
 	private void Start()
 	{
 		ResetPosition();
+		AddStartForce();
 	}
 
 	public void ResetPosition()
 	{
 		_rigidbody2D.position = Vector3.zero;
 		_rigidbody2D.velocity = Vector3.zero;
-
-		AddStartForce();
 	}
 
-	private void AddStartForce()
+	public void AddStartForce()
 	{
 		//get horizontal ball direction
 		float x = Random.value < 0.5f ? -1.0f : 1.0f;
