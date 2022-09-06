@@ -17,6 +17,14 @@ public class Laser : MonoBehaviour
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		Destroy(this.gameObject);
+		Ball ball = collision.gameObject.GetComponent<Ball>();
+
+		if (ball != null)
+		{
+			Vector2 normal = collision.GetContact(0).normal;
+			ball.AddForce(-normal * 1.5f);
+		}
+
+		//Destroy(this.gameObject);
 	}
 }
