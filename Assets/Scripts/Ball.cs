@@ -1,23 +1,28 @@
+using System.Collections;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
 	[SerializeField]
-	float _moveSpeed = 200.0f;
+	float moveSpeed = 200.0f;
+	[SerializeField]
+	AudioClip bounceSound;
+	[SerializeField]
+	AudioClip scoreSound;
 
 	private Rigidbody2D _rigidbody2D;
-	private AudioSource _bounceSound;
+	private AudioSource _audioSource;
 
 	private void Awake()
 	{
 		_rigidbody2D = GetComponent<Rigidbody2D>();
-		_bounceSound = GetComponent<AudioSource>();
+		_audioSource = GetComponent<AudioSource>();
 	}
 
 	private void Start()
 	{
 		ResetPosition();
-		AddStartForce();
+		StartCoroutine(WaitToAddForce());
 	}
 
 	public void ResetPosition()
@@ -34,7 +39,7 @@ public class Ball : MonoBehaviour
 		float y = Random.value < 0.5f ? Random.Range(-1.0f, -0.5f) : Random.Range(0.5f, 1.0f);
 
 		Vector2 direction = new Vector2(x, y);
-		_rigidbody2D.AddForce( direction * _moveSpeed);
+		_rigidbody2D.AddForce( direction * moveSpeed);
 	}
 
 	public void AddForce(Vector2 force)
@@ -44,6 +49,22 @@ public class Ball : MonoBehaviour
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		_bounceSound.Play();
+		GameObject impactObject = collision.gameObject;
+
+		if (impactObject.tag == "ScoreZone")
+			_audioSource.clip = scoreSound;
+		else
+			_audioSource.clip = bounceSound;
+
+		if (impactObject.tag == "Laser")
+			Destroy(impactObject);
+
+		_audioSource.Play();
+	}
+
+	IEnumerator WaitToAddForce()
+	{
+		yield return new WaitForSeconds(1.0f);
+		AddStartForce();
 	}
 }
